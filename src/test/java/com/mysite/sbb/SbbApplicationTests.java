@@ -1,5 +1,6 @@
 package com.mysite.sbb;
 
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -53,10 +54,9 @@ class SbbApplicationTests {
 		Answer a1 = new Answer();
 		a1.setContent("네 자동으로 생성됩니다.");
 		a1.setQuestion(q2); // 어떤 질문의 답변인지 알기위해서 Question 객체가 필요하다.
+		q2.addAnswer(a1);
 		a1.setCreateDate(LocalDateTime.now());
 		answerRepository.save(a1);
-
-		q2.getAnswerList().add(a1); // 조금 더 객체지향적으로 변했다.
 	}
 
 	@Test
@@ -200,6 +200,20 @@ class SbbApplicationTests {
 		assertTrue(oa.isPresent());
 		Answer a = oa.get();
 		assertEquals(2, a.getQuestion().getId());
+	}
+
+	@Transactional
+	@Test
+	@DisplayName("질문에 달린 답변 찾기")
+	void t011() {
+		Optional<Question> oq = this.questionRepository.findById(2);
+		assertTrue(oq.isPresent());
+		Question q = oq.get();
+
+		List<Answer> answerList = q.getAnswerList();
+
+		assertEquals(1, answerList.size());
+		assertEquals("네 자동으로 생성됩니다.", answerList.get(0).getContent());
 	}
 
 }
