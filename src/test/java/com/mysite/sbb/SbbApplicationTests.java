@@ -6,6 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 class SbbApplicationTests {
@@ -27,6 +31,75 @@ class SbbApplicationTests {
 		q2.setContent("id는 자동으로 생성되나요?");
 		q2.setCreateDate(LocalDateTime.now());
 		questionRepository.save(q2);  // 두번째 질문 저장
+	}
+
+	/*
+	SELECT *
+	FROM question
+	 */
+	@Test
+	@DisplayName("findAll")
+	void t002() {
+		List<Question> all = this.questionRepository.findAll();
+		assertEquals(2, all.size());
+
+		Question q = all.get(0);
+		assertEquals("sbb가 무엇인가요?", q.getSubject());
+	}
+
+	/*
+	SELECT *
+	FROM question
+	WHERE id = 1
+	 */
+	@Test
+	@DisplayName("findById")
+	void t003() {
+		Optional<Question> oq = this.questionRepository.findById(1);
+		if(oq.isPresent()) {
+			Question q = oq.get();
+			assertEquals("sbb가 무엇인가요?", q.getSubject());
+		}
+	}
+
+	/*
+	SELECT *
+	FROM question
+	WHERE subject = 'sbb가 무엇인가요?'
+	 */
+	@Test
+	@DisplayName("findBySubject")
+	void t004() {
+		Question q = this.questionRepository.findBySubject("sbb가 무엇인가요?");
+		assertEquals(1, q.getId());
+	}
+
+	/*
+    SELECT *
+    FROM question
+    WHERE subject = 'sbb가 무엇인가요?'
+    AND content = 'sbb에 대해서 알고 싶습니다.'
+    */
+	@Test
+	@DisplayName("findBySubjectAndContent")
+	void t005() {
+		Question q = this.questionRepository.findBySubjectAndContent(
+				"sbb가 무엇인가요?", "sbb에 대해서 알고 싶습니다.");
+		assertEquals(1, q.getId());
+	}
+
+	/*
+    SQL
+    SELECT *
+    FROM question
+    WHERE subject LIKE 'sbb%'
+    */
+	@Test
+	@DisplayName("findBySubjectLike")
+	void t006() {
+		List<Question> qList = this.questionRepository.findBySubjectLike("sbb%");
+		Question q = qList.get(0);
+		assertEquals("sbb가 무엇인가요?", q.getSubject());
 	}
 
 }
