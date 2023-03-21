@@ -41,7 +41,7 @@ class SbbApplicationTests {
 	@Test
 	@DisplayName("findAll")
 	void t002() {
-		List<Question> all = this.questionRepository.findAll();
+		List<Question> all = questionRepository.findAll();
 		assertEquals(2, all.size());
 
 		Question q = all.get(0);
@@ -56,7 +56,7 @@ class SbbApplicationTests {
 	@Test
 	@DisplayName("findById")
 	void t003() {
-		Optional<Question> oq = this.questionRepository.findById(1);
+		Optional<Question> oq = questionRepository.findById(1);
 		if(oq.isPresent()) {
 			Question q = oq.get();
 			assertEquals("sbb가 무엇인가요?", q.getSubject());
@@ -71,7 +71,7 @@ class SbbApplicationTests {
 	@Test
 	@DisplayName("findBySubject")
 	void t004() {
-		Question q = this.questionRepository.findBySubject("sbb가 무엇인가요?");
+		Question q = questionRepository.findBySubject("sbb가 무엇인가요?");
 		assertEquals(1, q.getId());
 	}
 
@@ -84,7 +84,7 @@ class SbbApplicationTests {
 	@Test
 	@DisplayName("findBySubjectAndContent")
 	void t005() {
-		Question q = this.questionRepository.findBySubjectAndContent(
+		Question q = questionRepository.findBySubjectAndContent(
 				"sbb가 무엇인가요?", "sbb에 대해서 알고 싶습니다.");
 		assertEquals(1, q.getId());
 	}
@@ -98,19 +98,47 @@ class SbbApplicationTests {
 	@Test
 	@DisplayName("findBySubjectLike")
 	void t006() {
-		List<Question> qList = this.questionRepository.findBySubjectLike("sbb%");
+		List<Question> qList = questionRepository.findBySubjectLike("sbb%");
 		Question q = qList.get(0);
 		assertEquals("sbb가 무엇인가요?", q.getSubject());
 	}
 
+	/*
+	UPDATE
+			question
+	SET
+		content = ?,
+		create_date = ?,
+		subject = ?
+	WHERE
+		id = ?
+	*/
 	@Test
 	@DisplayName("데이터 수정하기")
 	void t007() {
-		Optional<Question> oq = this.questionRepository.findById(1);
+		Optional<Question> oq = questionRepository.findById(1);
 		assertTrue(oq.isPresent());
 		Question q = oq.get();
 		q.setSubject("수정된 제목");
-		this.questionRepository.save(q);
+		questionRepository.save(q);
+	}
+
+	/*
+	DELETE
+	FROM
+			question
+	WHERE
+		id = ?
+	*/
+	@Test
+	@DisplayName("데이터 삭제하기")
+	void t008() {
+		assertEquals(2, questionRepository.count()); // SECLECT COUNT(*) FROM question
+		Optional<Question> oq = questionRepository.findById(1);
+		assertTrue(oq.isPresent());
+		Question q = oq.get();
+		questionRepository.delete(q);
+		assertEquals(1, questionRepository.count());
 	}
 
 }
