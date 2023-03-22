@@ -18,7 +18,7 @@ public class QuestionController {
 
     @GetMapping("/list")
     public String list(Model model) {
-        List<Question> questionList = this.questionService.getList();
+        List<Question> questionList = questionService.getList();
         model.addAttribute("questionList", questionList);
         return "question_list";
     }
