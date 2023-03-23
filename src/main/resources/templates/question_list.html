@@ -1,20 +1,8 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css">
+<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml">
 
-<style>
-    @font-face {
-        font-family: 'GmarketSansMedium';
-        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
-        font-weight: normal;
-        font-style: normal;
-    }
-
-    html > body {
-        font-family: "GmarketSansMedium";
-        text-underline-position: under;
-    }
-</style>
-
-<div class="container my-3">
+<head></head>
+<body>
+<div layout:fragment="content" class="container my-3">
     <table class="table">
         <thead class="table-dark">
         <tr>
@@ -36,3 +24,5 @@
         </tbody>
     </table>
 </div>
+</body>
+</html>
