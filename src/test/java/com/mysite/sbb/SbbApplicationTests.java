@@ -222,4 +222,18 @@ class SbbApplicationTests {
 		assertEquals("네 자동으로 생성됩니다.", answerList.get(0).getContent());
 	}
 
+	@Test
+	@DisplayName("테스트 데이터 300개 만들기")
+	void testJpa(){
+		for(int i=1; i<=300; i++){
+			String subject = String.format("테스트 데이터입니다 : [%03d]", i);
+			String content = "내용무";
+			Question q = new Question();
+			q.setSubject(subject);
+			q.setContent(content);
+			q.setCreateDate(LocalDateTime.now());
+			questionRepository.save(q);
+		}
+	}
+
 }
