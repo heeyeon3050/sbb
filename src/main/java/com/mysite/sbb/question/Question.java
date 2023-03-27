@@ -44,4 +44,6 @@ public class Question {
     //Question 속성 추가
     @ManyToOne
     private SiteUser author;
+
+    private LocalDateTime modifyDate;
 }

@@ -232,6 +232,7 @@ class SbbApplicationTests {
 			q.setSubject(subject);
 			q.setContent(content);
 			q.setCreateDate(LocalDateTime.now());
+			q.setAuthor(null);
 			questionRepository.save(q);
 		}
 	}
